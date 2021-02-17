@@ -5,7 +5,7 @@ import {BiArchiveIn} from 'react-icons/bi';
 import {useTasksState,useTasksDispatch} from '../context/tasks';
 import {TodoForm} from '../components/TodoForm';
 
-export const Todo = () => {
+export const Todo = ({filteredArray}) => {
     
     const tasksState = useTasksState();
     const todos = tasksState.todos ? tasksState.todos : [];
@@ -16,15 +16,7 @@ export const Todo = () => {
         value: {}
     });
 
-    const filteredArr = [...todos];
-
-    const filterArrPriority = (filterValue,arr) => {
-        filteredArr = [...arr].filter(task => task.priority === filterValue)
-    }
-
-    const filterArrLabels = (filterValue,arr) => {
-        filteredArr = [...arr].filter(task => task.tags.includes(filterValue));
-    }
+    
 
     const submitUpdate = value => {
         dispatch({type: 'UPDATE', payload: {id:edit.id, value: value}})
@@ -42,11 +34,11 @@ export const Todo = () => {
     }
 
     return <>
-            { todos.length !== 0 && <div className="min-w-3/4 min-h-64 bg-gray-200 bg-opacity-30 border-2 border-gray-200">
+            { filteredArray.length !== 0 && <div className="min-w-3/4 min-h-64 bg-gray-200 bg-opacity-30 border-2 border-gray-200">
            
            <div className="mt-2">
                {
-                   todos.map((todo, index) => (
+                   filteredArray.map((todo, index) => (
                        <div className="min-w-3/4 flex flex-row bg-white justify-between mx-1 border-2 px-3 py-2 rounded-lg" key={index}>
                            <div className="flex flex-row flex-1 justify-between  space-x-10" key={todo.id} >
                                <p>{todo.title}</p>

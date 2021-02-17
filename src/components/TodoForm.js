@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react'
+import React,{useState,useRef,useEffect} from 'react'
 import LabelsInput from '../components/LabelsInput';
 
 export const TodoForm = (props) => {
@@ -14,7 +14,14 @@ export const TodoForm = (props) => {
     const descriptionRef = useRef(null);
     const dateRef = useRef(null);
 
-
+    useEffect(() => {
+        setTitle('');
+        setDescription('');
+        setDate('');
+        setTodoTags([]);
+        setPriority('normal')
+        
+    }, [props.clearForm])
     
     const handleSubmit = (e) => {
         e.preventDefault();

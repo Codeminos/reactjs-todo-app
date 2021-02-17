@@ -1,5 +1,5 @@
 import React from "react";
-const LavelsInput = (props) => {
+const LabelsInput = (props) => {
     const [tags, setTags] = React.useState([]);
     const addTags = event => {
         if(event.key === " " && event.target.value !== ""){
@@ -23,4 +23,4 @@ const LavelsInput = (props) => {
         </div>
     );
 };
-export default LavelsInput;
+export default LabelsInput;
