@@ -1,16 +1,23 @@
-import React from "react";
+import React,{useEffect} from "react";
 const LabelsInput = (props) => {
     const [tags, setTags] = React.useState([]);
     const addTags = event => {
         if(event.key === " " && event.target.value !== ""){
-            setTags([...tags, event.target.value]);
-            props.selectedTags([...tags, event.target.value])
+            setTags([...tags, event.target.value.trim()]);
+            props.selectedTags([...tags, event.target.value.trim()])
             event.target.value = "";
         }
     }
     const removeTags = index => {
         setTags([...tags.filter(tag => tags.indexOf(tag) !== index)]);
     }
+
+    useEffect(() => {
+        if(props.clearTags){
+            setTags([]);
+        }
+        
+    }, [props.clearTags])
     return (
         <div className="tags-input">
             

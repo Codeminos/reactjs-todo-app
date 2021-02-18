@@ -6,10 +6,13 @@ import { Link } from 'react-router-dom';
 
 export const TasksList = () => {
 
-    const [todos,setTodos] = useState([]);
-    const [filterValue, setFilterValue] = useState('normal');
+    const [labelFilter,setLabelFilter] = useState('');
+    const [filterValue, setFilterValue] = useState('all');
     const [clearForm,setClearForm] = useState(false)
-
+    const [filterValues,setFilterValues]= useState({
+        priorityValue: 'all',
+        labelsValue: ''
+    })
     const dispatch = useTasksDispatch();
     const todoState = useTasksState();
 
@@ -22,7 +25,19 @@ export const TasksList = () => {
     //     });
     // },[todos])
 
-    
+    const handleSelect = (event) =>{
+        setFilterValues({
+            ...filterValues,
+            priorityValue: event.target.value
+        })
+    }
+
+    const handleLabelFilter = (event) => {
+        setFilterValues({
+            ...filterValues,
+            labelsValue: event.target.value
+        })
+    }
 
     const onSubmit = (todo) => {
         dispatch({type: 'CREATE',payload: {
@@ -38,20 +53,24 @@ export const TasksList = () => {
     } 
 
 
-    let filteredArr = [...todoState.todos];
 
-    const filterArrPriority = (filterValue,arr) => {
-        if(filterValue === 'all'){
-            filteredArr = [...todoState.todos];
-            return
-        }
-        filteredArr = [...arr].filter(task => task.priority === filterValue)
-        console.log(filteredArr)
+    const filterArr = (arr) => {
+        
+        let finalFilteredArr = filterValues.labelsValue === '' && filterValues.priorityValue === 'all' ? [...arr] : (filterValues.labelsValue === '' && filterValues.priorityValue !== 'all' ? [...arr].filter(task => task.priority === filterValues.priorityValue) :
+        (filterValues.labelsValue !== '' && filterValues.priorityValue === 'all' ? [...arr].filter(task => task.tags.includes(filterValues.labelsValue)) : ([...arr].filter(task => task.priority === filterValues.priorityValue && task.tags.includes(filterValues.labelsValue)))))
+         
+        return finalFilteredArr;
     }
 
-    const filterArrLabels = (filterValue,arr) => {
-        filteredArr = [...arr].filter(task => task.tags.includes(filterValue));
-    }
+    let filteredArr = filterArr([...todoState.todos]);
+
+
+    // const filterArrLabels = (labelFilterValue,arr) => {
+    //     if(labelFilterValue === ""){
+    //         filteredArr = [...todoState.todos]
+    //     }
+    //     filteredArr = [...arr].filter(task => task.tags.includes(labelFilterValue));
+    // }
 
     
     return   (
@@ -60,19 +79,27 @@ export const TasksList = () => {
             <div className="bg-blue-500 text-white font-semibold absolute top-0 left-0 border-2 border-blue-400 rounded-lg px-2 py-2 mt-3 ml-3">
                 <Link to="/archive">Archive</Link>  
                 </div>
-                <div className="flex flex-col">
-                    <p className="mb-2 text-white font-bold">Filter by priority: </p>
-                    <select value={filterValue} onChange={event => setFilterValue(event.target.value)}  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                <div className="flex flex-row">
+                <div className="flex flex-col mr-3">
+                    <p className="mb-2 text-white font-bold">Filter TODOs: </p>
+                    <label htmlFor="priority" className="text-white text-sm font-bold">Priority:</label>
+                    <select id="priority" onChange={handleSelect}  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                         <option value="all">All</option>
                         <option value="normal">normal</option>
                         <option vlaue="important">important</option>
                         <option value="urgent">urgent</option>
                     </select>
-                    <button onClick={filterArrPriority(filterValue,filteredArr)} className="hidden">
+                   
+                    <label htmlFor="labelFilter" className="text-white text-sm font-bold">Label:</label>
+                    <input id="labelFilter" onChange={handleLabelFilter} name="labelFilter" type="text"  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Task title..."/>                    
+                </div>
+                {/* <div>
+                <button onClick={filterArr(filteredArr)} className=" mt-10">
                         Filter
                     </button>
-                </div>
+                </div> */}
                 <TodoForm onSubmit={onSubmit} btnText="ADD"  clearForm={clearForm}/>
+                </div>
                 <Todo filteredArray={[...filteredArr]}/>
             </div>
         </>

@@ -1,4 +1,4 @@
-import React,{useState,useRef,useEffect} from 'react'
+import React,{useState,useRef} from 'react'
 import LabelsInput from '../components/LabelsInput';
 
 export const TodoForm = (props) => {
@@ -9,19 +9,13 @@ export const TodoForm = (props) => {
     const [todoTags,setTodoTags] = useState([]);
     const [priority, setPriority] = useState('normal');
     const [dateError, setDateError] = useState(null);
+    const [clearTags, setClearTags] = useState(false);
 
     const titleRef = useRef(null);
     const descriptionRef = useRef(null);
     const dateRef = useRef(null);
 
-    useEffect(() => {
-        setTitle('');
-        setDescription('');
-        setDate('');
-        setTodoTags([]);
-        setPriority('normal')
-        
-    }, [props.clearForm])
+
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -35,6 +29,7 @@ export const TodoForm = (props) => {
             priority: priority
         });
 
+        setClearTags(true);
         setTitle('');
         setDescription('');
         setDate('');
@@ -47,7 +42,8 @@ export const TodoForm = (props) => {
 
     return (
         <div className="min-w-1/4 max-w-full flex flex-col justify-center">
-            <form className=" mt-8 space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
+            <p className="text-white font-bold">Add a new TODO:</p>
+            <form className=" space-y-2" action="#" method="POST" onSubmit={handleSubmit}>
                 <input type="hidden" name="remember" value="true"/>
                 <div className=" rounded-md shadow-sm space-y-px">
                     <div >
@@ -86,7 +82,7 @@ export const TodoForm = (props) => {
                         {dateError && <p className="text-red-500 text-xs bg-white px-1 py-1 mb-1 rounded">{dateError}</p>}
                     </div>
                     <div >
-                        <LabelsInput selectedTags={selectedTags}/>
+                        <LabelsInput selectedTags={selectedTags} clearTags={clearTags}/>
                     </div>
                     <div>
                         <select value={priority} onChange={event => setPriority(event.target.value)}  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
