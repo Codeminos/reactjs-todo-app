@@ -34,7 +34,8 @@ export const Todo = ({filteredArray}) => {
     }
 
     return <>
-            { filteredArray.length !== 0 && <div className="min-w-3/4 min-h-64 max-h-80 bg-gray-200 bg-opacity-30 border-2 border-gray-200 ">
+            <p className="text-center text-white text-4xl font-semibold">Your Tasks:</p>
+            { filteredArray.length !== 0 && <div className="min-w-3/4 h-56 overflow-scroll overflow-x-hidden max-h-80 bg-gray-200 bg-opacity-30 border-2 border-gray-200 ">
            
            <div className="mt-2 overscroll-auto">
                {

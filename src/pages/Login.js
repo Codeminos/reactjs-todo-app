@@ -31,6 +31,7 @@ export default function Login(props) {
             <form className="min-w-1/4 mt-8 space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
             <input type="hidden" name="remember" value="true"/>
             <div className="rounded-md  shadow-sm -space-y-px">
+            <p className="text-center font-bold text-5xl mx-24 text-white mb-12">Login</p>
         <div>
           <label htmlFor="email-address" className=" sr-only">Email address</label>
           <input id="email-address" value={email} onChange={event => setEmail(event.target.value)} name="email" type="email" autoComplete="email" required className="min-w-full appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address"/>
